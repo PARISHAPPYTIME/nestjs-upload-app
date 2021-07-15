@@ -7,7 +7,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { createWriteStream } from 'fs';
 import { join } from 'path';
 
