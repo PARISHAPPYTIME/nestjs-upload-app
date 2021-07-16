@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileEntity } from '../entities/file.entity';
-import { InsertResult } from 'typeorm';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createWriteStream } from 'fs';
 import { join } from 'path';
@@ -23,7 +22,34 @@ export class FileController {
   }
 
   @Post('append')
-  append(): Promise<InsertResult> {
-    return this.fileService.append();
+  @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
+  async append(@UploadedFile() file: Express.Multer.File, @Body() body) {
+    console.log(body.name);
+    try {
+      const writeImage = createWriteStream(
+        join(__dirname, '../..', 'upload', `${file.originalname}`),
+      );
+      writeImage.write(file.buffer);
+      const fileRes = await this.fileService.append({
+        name: body.name,
+        path: `upload/${file.originalname}`,
+        userId: '123',
+        fileType: 'image',
+      });
+      console.log(fileRes.generatedMaps[0].uuid);
+      return {
+        code: 200,
+        msg: 'success',
+        data: {
+          uuid: fileRes.generatedMaps[0].uuid,
+        },
+      };
+    } catch {
+      return {
+        code: 201,
+        msg: 'fail',
+        data: {},
+      };
+    }
   }
 }

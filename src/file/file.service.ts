@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InsertResult, Repository } from 'typeorm';
+import { InsertQueryBuilder, InsertResult, Repository } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { FileEntity } from '../entities/file.entity';
 
 @Injectable()
@@ -14,19 +15,16 @@ export class FileService {
     return await this.fileRepository.query('select * from file');
   }
 
-  async append(): Promise<InsertResult> {
+  async append(
+    item:
+      | QueryDeepPartialEntity<FileEntity>
+      | QueryDeepPartialEntity<FileEntity>,
+  ): Promise<InsertResult> {
     const file = await this.fileRepository
       .createQueryBuilder()
       .insert()
       .into(FileEntity)
-      .values([
-        {
-          name: '21',
-          path: '/123',
-          userId: '123',
-          fileType: 'image',
-        },
-      ])
+      .values([item])
       .execute();
     return file;
   }
