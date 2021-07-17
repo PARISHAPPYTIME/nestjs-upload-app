@@ -12,7 +12,9 @@ export class FileService {
   ) {}
 
   async findAll(): Promise<FileEntity[]> {
-    return await this.fileRepository.query('select * from file');
+    return await this.fileRepository.query(
+      'select * from file order by created_at desc',
+    );
   }
 
   async append(

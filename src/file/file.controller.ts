@@ -27,16 +27,15 @@ export class FileController {
     console.log(body.name);
     try {
       const writeImage = createWriteStream(
-        join(__dirname, '../..', 'upload', `${file.originalname}`),
+        join(__dirname, '../../upload/resource', `${file.originalname}`),
       );
       writeImage.write(file.buffer);
       const fileRes = await this.fileService.append({
         name: body.name,
-        path: `upload/${file.originalname}`,
+        path: `resource/${file.originalname}`,
         userId: '123',
         fileType: 'image',
       });
-      console.log(fileRes.generatedMaps[0].uuid);
       return {
         code: 200,
         msg: 'success',
@@ -44,7 +43,7 @@ export class FileController {
           uuid: fileRes.generatedMaps[0].uuid,
         },
       };
-    } catch {
+    } catch (e) {
       return {
         code: 201,
         msg: 'fail',
