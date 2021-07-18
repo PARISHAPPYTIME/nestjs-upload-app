@@ -5,6 +5,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Body,
+  Query,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileEntity } from '../entities/file.entity';
@@ -21,10 +22,14 @@ export class FileController {
     return this.fileService.findAll();
   }
 
+  @Get('remove')
+  deleteItem(@Query('id') id: string) {
+    return this.fileService.deleteItem(id);
+  }
+
   @Post('append')
   @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
   async append(@UploadedFile() file: Express.Multer.File, @Body() body) {
-    console.log(body.name);
     try {
       const writeImage = createWriteStream(
         join(__dirname, '../../upload/resource', `${file.originalname}`),
@@ -33,7 +38,7 @@ export class FileController {
       const fileRes = await this.fileService.append({
         name: body.name,
         path: `resource/${file.originalname}`,
-        userId: '123',
+        userId: body.username,
         fileType: 'image',
       });
       return {

@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileModule } from './file/file.module';
+import { EventsGateway } from './events.gateway';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { FileModule } from './file/file.module';
     FileModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}

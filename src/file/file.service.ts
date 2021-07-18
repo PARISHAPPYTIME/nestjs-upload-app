@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InsertQueryBuilder, InsertResult, Repository } from 'typeorm';
+import { DeleteResult, InsertResult, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { FileEntity } from '../entities/file.entity';
 
@@ -12,9 +12,24 @@ export class FileService {
   ) {}
 
   async findAll(): Promise<FileEntity[]> {
-    return await this.fileRepository.query(
-      'select * from file order by created_at desc',
-    );
+    console.log('list：列表查询');
+    const res = await this.fileRepository
+      .createQueryBuilder('file')
+      .orderBy('file.created_at', 'DESC')
+      .getMany();
+    return res;
+  }
+
+  async deleteItem(id: string): Promise<DeleteResult> {
+    console.log('list：列表删除 => ' + id);
+    console.log('id', id);
+    const res = await this.fileRepository
+      .createQueryBuilder()
+      .delete()
+      .from(FileEntity)
+      .where('id = :id', { id: id })
+      .execute();
+    return res;
   }
 
   async append(
@@ -22,6 +37,7 @@ export class FileService {
       | QueryDeepPartialEntity<FileEntity>
       | QueryDeepPartialEntity<FileEntity>,
   ): Promise<InsertResult> {
+    console.log('list：列表新增数据');
     const file = await this.fileRepository
       .createQueryBuilder()
       .insert()
