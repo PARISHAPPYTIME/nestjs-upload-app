@@ -43,12 +43,12 @@ export class AuthService {
         data: {
           token,
         },
-        msg: `登录成功`,
+        message: `登录成功`,
       };
     } catch (error) {
       return {
         code: 600,
-        msg: `账号或密码错误`,
+        message: `账号或密码错误`,
       };
     }
   }

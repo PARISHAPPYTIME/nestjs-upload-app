@@ -1,7 +1,8 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from './user.service';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
+import { l } from '../../utils/index';
 
 @Controller('user')
 export class UserController {
@@ -14,7 +15,7 @@ export class UserController {
   // JWT验证 - Step 1: 用户请求登录
   @Post('login')
   async login(@Body() loginParams: any) {
-    console.log('JWT验证 - Step 1: 用户请求登录');
+    l('JWT验证 - Step 1: 用户请求登录');
     const authResult = await this.authService.validateUser(
       loginParams.username,
       loginParams.password,
@@ -25,12 +26,12 @@ export class UserController {
       case 2:
         return {
           code: 600,
-          msg: `账号或密码不正确`,
+          message: `账号或密码不正确`,
         };
       default:
         return {
           code: 600,
-          msg: `查无此人`,
+          message: `找不到该用户的信息`,
         };
     }
   }

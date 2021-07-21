@@ -13,12 +13,17 @@ export class UserService {
   ) {}
 
   async registered(body): Promise<any> {
-    l('有人尝试注册用户');
     const { username, password, repassword } = body;
+    if (!username || !password || !repassword) {
+      return {
+        code: 400,
+        message: '缺少需要的参数',
+      };
+    }
     if (password !== repassword) {
       return {
         code: 400,
-        msg: '两次密码输入不一致',
+        message: '抱歉，两次密码输入不一致',
       };
     }
 
@@ -26,9 +31,10 @@ export class UserService {
     if (user) {
       return {
         code: 400,
-        msg: '用户已存在',
+        message: '昵称已经被使用了',
       };
     }
+    l('有人尝试注册用户');
 
     const salt = makeSalt(); // 制作密码盐
     const hashPwd = encryptPassword(password, salt); // 加密密码
@@ -40,15 +46,15 @@ export class UserService {
         .into(UserEntity)
         .values([{ username, password: hashPwd, password_salt: salt }])
         .execute();
-      l('用户注册成功');
+      l('账号注册成功');
       return {
         code: 200,
-        msg: 'Success',
+        message: '账号注册成功，欢迎来到我们的世界',
       };
     } catch (error) {
       return {
         code: 503,
-        msg: `Service error: ${error}`,
+        message: `Service error: ${error}`,
       };
     }
   }

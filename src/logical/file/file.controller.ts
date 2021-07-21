@@ -41,12 +41,12 @@ export class FileController {
       const fileRes = await this.fileService.append({
         name: body.name,
         path: `resource/${file.originalname}`,
-        userId: body.username,
+        userId: 'body.username',
         fileType: 'image',
       });
       return {
         code: 200,
-        msg: 'success',
+        message: '文件上传成功',
         data: {
           uuid: fileRes.generatedMaps[0].uuid,
         },
@@ -55,7 +55,7 @@ export class FileController {
       console.log(e);
       return {
         code: 201,
-        msg: 'fail',
+        message: '文件上传失败',
         data: {},
       };
     }
