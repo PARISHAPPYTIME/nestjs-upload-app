@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'auth' })
-export class AuthEntity extends BaseEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,6 +29,14 @@ export class AuthEntity extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'avatar', comment: '头像', default: '' })
   avatar: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'password_salt',
+    comment: '密钥键',
+    default: '',
+  })
+  password_salt: string;
 
   @CreateDateColumn({
     type: 'timestamp',

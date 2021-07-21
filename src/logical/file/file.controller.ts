@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { FileService } from './file.service';
-import { FileEntity } from '../entities/file.entity';
+import { FileEntity } from './file.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createWriteStream } from 'fs';
 import { join } from 'path';

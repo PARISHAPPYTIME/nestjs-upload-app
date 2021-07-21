@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { AuthEntity } from './auth.entity';
-import { baseResultType } from '../../type/index';
+import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, InsertResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { makeSalt, encryptPassword } from '../../utils/cryptogram';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthService {
+export class UserService {
   constructor(
-    @InjectRepository(AuthEntity)
-    private readonly authRepository: Repository<AuthEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async registered(body): Promise<any> {
+    console.log(body);
     const { username, password, repassword } = body;
     if (password !== repassword) {
       return {
@@ -34,11 +33,11 @@ export class AuthService {
     const hashPwd = encryptPassword(password, salt); // 加密密码
 
     try {
-      await this.authRepository
+      await this.userRepository
         .createQueryBuilder()
         .insert()
-        .into(AuthEntity)
-        .values([{ username, password: hashPwd }])
+        .into(UserEntity)
+        .values([{ username, password: hashPwd, password_salt: salt }])
         .execute();
       return {
         code: 200,
@@ -53,7 +52,7 @@ export class AuthService {
   }
 
   async findOne(username: string): Promise<any | undefined> {
-    const res = this.authRepository
+    const res = await this.userRepository
       .createQueryBuilder('auth')
       .where('auth.username = :username', { username })
       .getOne();
