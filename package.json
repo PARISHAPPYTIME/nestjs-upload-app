@@ -30,6 +30,7 @@
     "@nestjs/platform-socket.io": "^8.0.4",
     "@nestjs/typeorm": "^8.0.1",
     "@nestjs/websockets": "^8.0.4",
+    "chalk": "^4.1.1",
     "crypto": "^1.0.1",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",

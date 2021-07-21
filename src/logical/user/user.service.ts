@@ -3,6 +3,7 @@ import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { makeSalt, encryptPassword } from '../../utils/cryptogram';
+import { l } from '../../utils/index';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,7 @@ export class UserService {
   ) {}
 
   async registered(body): Promise<any> {
-    console.log(body);
+    l('有人尝试注册用户');
     const { username, password, repassword } = body;
     if (password !== repassword) {
       return {
@@ -39,6 +40,7 @@ export class UserService {
         .into(UserEntity)
         .values([{ username, password: hashPwd, password_salt: salt }])
         .execute();
+      l('用户注册成功');
       return {
         code: 200,
         msg: 'Success',

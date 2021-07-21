@@ -6,12 +6,14 @@ import {
   UploadedFile,
   Body,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileEntity } from './file.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createWriteStream } from 'fs';
 import { join } from 'path';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('upload')
 export class FileController {
@@ -27,12 +29,13 @@ export class FileController {
     return this.fileService.deleteItem(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('append')
   @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
   async append(@UploadedFile() file: Express.Multer.File, @Body() body) {
     try {
       const writeImage = createWriteStream(
-        join(__dirname, '../../upload/resource', `${file.originalname}`),
+        join(__dirname, '../../../upload/resource', `${file.originalname}`),
       );
       writeImage.write(file.buffer);
       const fileRes = await this.fileService.append({
@@ -49,6 +52,7 @@ export class FileController {
         },
       };
     } catch (e) {
+      console.log(e);
       return {
         code: 201,
         msg: 'fail',

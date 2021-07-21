@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, InsertResult, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { FileEntity } from './file.entity';
+import { l } from '../../utils/index';
 
 @Injectable()
 export class FileService {
@@ -37,7 +38,7 @@ export class FileService {
       | QueryDeepPartialEntity<FileEntity>
       | QueryDeepPartialEntity<FileEntity>,
   ): Promise<InsertResult> {
-    console.log('list：列表新增数据');
+    l('用户上传文件');
     const file = await this.fileRepository
       .createQueryBuilder()
       .insert()
