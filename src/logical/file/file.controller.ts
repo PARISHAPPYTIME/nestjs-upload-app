@@ -8,12 +8,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '@nestjs/passport';
+import { createWriteStream } from 'fs';
+import { resolve } from 'path';
 import { FileService } from './file.service';
 import { FileEntity } from './file.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { createWriteStream } from 'fs';
-import { join } from 'path';
-import { AuthGuard } from '@nestjs/passport';
+import { dirExists } from '../../utils/index';
 
 @Controller('upload')
 export class FileController {
@@ -36,8 +37,9 @@ export class FileController {
   @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
   async append(@UploadedFile() file: Express.Multer.File, @Body() body) {
     try {
+      await dirExists(resolve('public/resource'));
       const writeImage = createWriteStream(
-        join(__dirname, '../../../upload/resource', `${file.originalname}`),
+        resolve('public/resource', `${file.originalname}`),
       );
       writeImage.write(file.buffer);
       const fileRes = await this.fileService.append({

@@ -6,7 +6,6 @@ import {
   MessageBody,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { Socket } from 'dgram';
 import { from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -40,10 +39,11 @@ export class EventsGateway {
 
   @SubscribeMessage('someOneUploadFile')
   onUploadFile(
-    @MessageBody() data: string,
+    @MessageBody() data: any,
     @ConnectedSocket() client: any,
   ): Observable<WsResponse<any>> | any {
     const event = 'receive-someOneUploadFile';
+    console.log('???');
     client.broadcast.emit(event, data);
     return;
   }

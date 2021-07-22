@@ -20,14 +20,14 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
-  UploadedFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
-    console.log(body.name);
-    const writeImage = createWriteStream(
-      join(__dirname, '..', 'upload', `${file.originalname}`),
-    );
-    writeImage.write(file.buffer);
-    return this.appService.getFileStatus();
-  }
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file')) // file 对应 HTML 表单的 name 属性
+  // UploadedFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
+  //   console.log(body.name);
+  //   const writeImage = createWriteStream(
+  //     join(__dirname, '..', 'upload', `${file.originalname}`),
+  //   );
+  //   writeImage.write(file.buffer);
+  //   return this.appService.getFileStatus();
+  // }
 }

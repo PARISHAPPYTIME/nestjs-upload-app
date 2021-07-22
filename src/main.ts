@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as express from 'express';
+import { join } from 'path';
 import { logger } from './middleware/logger.middleware';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
@@ -19,7 +20,7 @@ async function bootstrap() {
   // 过滤处理 HTTP 异常
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  app.useStaticAssets('upload');
+  app.useStaticAssets(join(__dirname, '..', 'public'));
   app.enableCors();
   await app.listen(3000);
 }
