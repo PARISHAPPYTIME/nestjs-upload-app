@@ -19,11 +19,13 @@ import { AuthGuard } from '@nestjs/passport';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('list')
   findAll(): Promise<FileEntity[]> {
     return this.fileService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('remove')
   deleteItem(@Query('id') id: string) {
     return this.fileService.deleteItem(id);

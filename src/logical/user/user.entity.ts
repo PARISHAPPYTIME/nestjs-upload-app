@@ -32,6 +32,22 @@ export class UserEntity extends BaseEntity {
 
   @Column({
     type: 'varchar',
+    name: 'realName',
+    comment: '真实姓名',
+    default: '',
+  })
+  realName: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'role',
+    comment: '用户权限',
+    default: 'common',
+  })
+  role: string;
+
+  @Column({
+    type: 'varchar',
     name: 'password_salt',
     comment: '密钥键',
     default: '',

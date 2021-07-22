@@ -34,7 +34,6 @@ export class UserService {
         message: '昵称已经被使用了',
       };
     }
-    l('有人尝试注册用户');
 
     const salt = makeSalt(); // 制作密码盐
     const hashPwd = encryptPassword(password, salt); // 加密密码
@@ -46,7 +45,6 @@ export class UserService {
         .into(UserEntity)
         .values([{ username, password: hashPwd, password_salt: salt }])
         .execute();
-      l('账号注册成功');
       return {
         code: 200,
         message: '账号注册成功，欢迎来到我们的世界',

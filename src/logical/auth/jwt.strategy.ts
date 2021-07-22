@@ -14,7 +14,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('Jwt 验证 - Step4：被守卫调用');
     return {
       userId: payload.sub,
       username: payload.username,

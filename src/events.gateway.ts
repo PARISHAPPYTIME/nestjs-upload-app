@@ -3,9 +3,12 @@ import {
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
+  MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
-import { Observable, of } from 'rxjs';
-// import { map } from 'rxjs/operators';
+import { Socket } from 'dgram';
+import { from, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 let num = 0;
 
@@ -14,18 +17,45 @@ export class EventsGateway {
   @WebSocketServer() server;
 
   @SubscribeMessage('events')
-  onEvent(client: any, payload: any): Observable<WsResponse<any>> | any {
-    const { name, message, type, data } = payload;
-    switch (type) {
-      case 'someOneUploadFile':
-        console.log(`${name}：上传了文件，准备提醒其他用户`);
-        client.broadcast.emit('someOneUploadFile', data);
-        break;
-      default:
-        console.log(`${name}：${message}`);
-        break;
-    }
-    return of(payload);
+  onEvent(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: any,
+  ): Observable<WsResponse<any>> | any {
+    const event = 'events';
+    const response = [1, 2, 3];
+
+    return from(response).pipe(map((data) => ({ event, data })));
+    // const { name, message, type, data } = payload;
+    // switch (type) {
+    //   case 'someOneUploadFile':
+    //     console.log(`${name}：上传了文件，准备提醒其他用户`);
+    //     client.broadcast.emit('someOneUploadFile', data);
+    //     break;
+    //   default:
+    //     console.log(`${name}：${message}`);
+    //     break;
+    // }
+    // return of(payload);
+  }
+
+  @SubscribeMessage('someOneUploadFile')
+  onUploadFile(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: any,
+  ): Observable<WsResponse<any>> | any {
+    const event = 'receive-someOneUploadFile';
+    client.broadcast.emit(event, data);
+    return;
+  }
+
+  @SubscribeMessage('test')
+  onTest(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: any,
+  ): Observable<WsResponse<any>> | any {
+    const event = 'receive-test';
+    client.broadcast.emit(event, data);
+    return;
   }
 
   @SubscribeMessage('message')

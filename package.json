@@ -32,6 +32,8 @@
     "@nestjs/websockets": "^8.0.4",
     "chalk": "^4.1.1",
     "crypto": "^1.0.1",
+    "dayjs": "^1.10.6",
+    "log4js": "^6.3.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -39,6 +41,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "stacktrace-js": "^2.0.2",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2"
   },

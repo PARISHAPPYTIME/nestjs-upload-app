@@ -13,7 +13,6 @@ export class FileService {
   ) {}
 
   async findAll(): Promise<FileEntity[]> {
-    console.log('list：列表查询');
     const res = await this.fileRepository
       .createQueryBuilder('file')
       .orderBy('file.created_at', 'DESC')
@@ -22,8 +21,6 @@ export class FileService {
   }
 
   async deleteItem(id: string): Promise<DeleteResult> {
-    console.log('list：列表删除 => ' + id);
-    console.log('id', id);
     const res = await this.fileRepository
       .createQueryBuilder()
       .delete()
@@ -38,7 +35,6 @@ export class FileService {
       | QueryDeepPartialEntity<FileEntity>
       | QueryDeepPartialEntity<FileEntity>,
   ): Promise<InsertResult> {
-    l('用户上传文件');
     const file = await this.fileRepository
       .createQueryBuilder()
       .insert()
