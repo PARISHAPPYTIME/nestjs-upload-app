@@ -20,10 +20,15 @@ import { dirExists } from '../../utils/index';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('list')
-  findAll(): Promise<FileEntity[]> {
-    return this.fileService.findAll();
+  async findAll() {
+    const list = await this.fileService.findAll();
+    return {
+      code: 200,
+      data: {
+        data: list,
+      },
+    };
   }
 
   @UseGuards(AuthGuard('jwt'))

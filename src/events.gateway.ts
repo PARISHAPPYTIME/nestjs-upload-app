@@ -43,7 +43,6 @@ export class EventsGateway {
     @ConnectedSocket() client: any,
   ): Observable<WsResponse<any>> | any {
     const event = 'receive-someOneUploadFile';
-    console.log('???');
     client.broadcast.emit(event, data);
     return;
   }
