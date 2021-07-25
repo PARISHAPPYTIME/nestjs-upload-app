@@ -31,10 +31,11 @@ export class AuthService {
   async certificate(user: any) {
     const payload = {
       username: user.username,
-      sub: user.userId,
+      userId: user.userId,
       realName: user.realName,
       role: user.role,
     };
+    console.log('payload', payload);
     console.log('JWT验证 - Step 3: 处理 jwt 签证');
     try {
       const token = this.jwtService.sign(payload);

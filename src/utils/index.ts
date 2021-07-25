@@ -45,3 +45,15 @@ function isMkdir(dir) {
     });
   });
 }
+
+function callbackSuccessStatus(message, data) {
+  return {
+    code: 200,
+    message,
+    data,
+  };
+}
+
+export const Res = {
+  Success: callbackSuccessStatus,
+};

@@ -10,8 +10,10 @@ import {
 
 @Entity({ name: 'auth' })
 export class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({
+    name: 'user_id',
+  })
+  userId: number;
 
   @Column({
     type: 'varchar',

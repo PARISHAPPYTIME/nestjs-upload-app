@@ -20,9 +20,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     Method: ${request.method}
     IP: ${request.ip}
     Status code: ${status}
-    Response: ${exception.toString()} \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    Response: XX \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     `;
     Logger.info(logFormat);
+    // exception.toString()
     response.status(status).json({
       statusCode: status,
       error: exception.message,

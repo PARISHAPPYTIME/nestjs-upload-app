@@ -23,6 +23,9 @@ export class FileEntity extends BaseEntity {
   @Column({ type: 'varchar', name: 'name' })
   name: string;
 
+  @Column({ type: 'varchar', name: 'filename' })
+  filename: string;
+
   @Column({ type: 'varchar', name: 'user_id', comment: '创建人', default: '' })
   userId: string;
 
